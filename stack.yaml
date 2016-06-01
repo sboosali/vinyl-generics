@@ -2,6 +2,7 @@ resolver: lts-6.1
 
 packages:
 - .
+- ../vinyl-sum
 
-extra-deps: []
-
+extra-deps:
+- vinyl-sum-0.0.0

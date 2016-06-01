@@ -52,15 +52,18 @@ library
                      ScopedTypeVariables StandaloneDeriving
 
  exposed-modules:
-  Vinyl
-  Vinyl.Types
+  Vinyl.Generics
+  Vinyl.Generics.Types
 
 -- other-modules:
-  Vinyl.Extra
-  Vinyl.Example
+  Vinyl.Generics.Extra
+  Vinyl.Generics.Example
 
  build-depends:
     base >=4.7 && <5
+
+  , vinyl
+  , vinyl-sum
 
   -- ,
   -- , transformers
@@ -157,4 +160,3 @@ benchmark command
   , vinyl-generics
   , criterion
   , deepseq
-

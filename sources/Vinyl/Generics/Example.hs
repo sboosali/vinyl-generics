@@ -1,5 +1,5 @@
-module Vinyl.Example where
-import Vinyl.Extra
+module Vinyl.Generics.Example where
+import Vinyl.Generics.Extra
 
 {-|
 @

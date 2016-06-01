@@ -1,5 +1,4 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
-import qualified Vinyl.Example
+import qualified Vinyl.Generics.Example
 
-main = Vinyl.Example.main
-
+main = Vinyl.Generics.Example.main

@@ -1,5 +1,5 @@
-module Vinyl.Extra
- ( module Vinyl.Extra
+module Vinyl.Generics.Extra
+ ( module Vinyl.Generics.Extra
  , module X
  ) where
 
