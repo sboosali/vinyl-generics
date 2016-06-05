@@ -67,40 +67,10 @@ library
 
   , vinyl
   , vinyl-sum
+  , constraints
 
-  -- ,
-  -- , transformers
-  -- , mtl
-  -- , containers
-  -- , bytestring
-  -- , stm
-  -- , template-haskell
-
-  --
-  -- , deepseq
-  -- , hashable
-  -- , semigroups
-
-  -- ,
-  -- , lens
-  -- , exceptions
-  -- , free
-  -- , bifunctors
-  -- , profunctors
-  -- , either
-  -- , pipes
-  -- , formatting
-  -- , servant
-  -- , Earley
-  -- , split
-  -- , interpolatedstring-perl6
-  -- , wl-pprint-text
-  -- , text
-  -- , aeson
-  -- , hashable
-  -- , unordered-containers
-  -- , async
-  -- , parallel
+  -- TODO mv to executable
+  , stm
 
 
 executable example-vinyl-generics

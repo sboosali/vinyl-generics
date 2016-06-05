@@ -7,12 +7,15 @@
 -}
 module Vinyl.Generics.Product where
 import Vinyl.Generics.Extra
+import Vinyl.Generics.Types
 
-import Data.Vinyl
+import Data.Vinyl hiding (Dict)
 import Data.Vinyl.TypeLevel
 import Data.Vinyl.Functor (Identity(..))
 --(Rec(..),(<+>))
+import Data.Constraint (Dict(..),(:-)(..))
 
+import Data.Proxy
 import GHC.Generics
 
 --------------------------------------------------------------------------------
@@ -87,10 +90,58 @@ instance GIsProduct (K1 R a) where --TODO R?
  -- TODO Spurious nonexhaustive patterns warning
 
 -- | use '<+>'
-instance (GIsProduct f, GIsProduct g) => GIsProduct (f :*: g) where
+instance
+ ( GIsProduct f, GIsProduct g
+ , GFields f <: GFields f
+ , GFields g <: GFields g
+ )
+ => GIsProduct (f :*: g) where
  type GFields (f :*: g) = GFields f ++ GFields g
  intoGProduct (f :*: g) = intoGProduct f <+> intoGProduct g
- fromGProduct = undefined
+ fromGProduct p =
+   case (proof_RightAppendPreservesSubset pFs pFs pGs) of
+     Sub Dict -> case (proof_LeftAppendPreservesSubset pGs pGs pFs) of
+       Sub Dict -> (fromGProduct (rcast p)) :*: (fromGProduct (rcast p)) --TODO duplicates?
+  where
+  pFs = Proxy :: Proxy (GFields f)
+  pGs = Proxy :: Proxy (GFields g)
+
+{-old
+
+#1
+
+fromGProduct p = (fromGProduct (rcast p)) :*: (fromGProduct (rcast p)) --TODO duplicates?
+
+Could not deduce (RSubset
+                    (GFields f)
+                    (GFields f ++ GFields g)
+                    (RImage (GFields f) (GFields f ++ GFields g)))
+
+Could not deduce (RSubset
+                    (GFields g)
+                    (GFields f ++ GFields g)
+                    (RImage (GFields g) (GFields f ++ GFields g)))
+
+lol, must prove those facts.
+
+#2
+
+instance
+ ( (GFields f) <: (GFields f ++ GFields g), (GFields g) <: (GFields f ++ GFields g)
+
+No instance for (Data.Vinyl.Lens.RElem
+                    a '[P, a] (Data.Vinyl.TypeLevel.RIndex a '[P, a]))
+   arising from a use of ‘Vinyl.Generics.Product.$gdmintoProduct’
+ In the expression: Vinyl.Generics.Product.$gdmintoProduct
+ In an equation for ‘intoProduct’:
+     intoProduct = Vinyl.Generics.Product.$gdmintoProduct
+ In the instance declaration for ‘IsProduct (F a)’
+
+...
+
+pushes the proof to the client, destroying derivability
+
+-}
 
 -- | (ignore metadata)
 instance (GIsProduct f) => GIsProduct (M1 i t f) where
