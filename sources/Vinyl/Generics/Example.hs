@@ -1,9 +1,11 @@
 module Vinyl.Generics.Example where
-import Vinyl.Generics.Extra
+-- import Vinyl.Generics
+
+import Data.Foldable (traverse_)
 
 {-|
 @
-stack build && stack exec -- vinyl-generics-example
+stack build && stack exec -- example-vinyl-generics
 @
 -}
 main :: IO ()

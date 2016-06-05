@@ -3,9 +3,9 @@ module Vinyl.Generics.Extra
  , module X
  ) where
 
-import Control.DeepSeq as X (NFData)
-import Data.Hashable as X (Hashable)
-import Data.Semigroup as X (Semigroup)
+-- import Control.DeepSeq as X (NFData)
+-- import Data.Hashable as X (Hashable)
+-- import Data.Semigroup as X (Semigroup)
 
 import GHC.Generics as X (Generic)
 import Data.Data as X (Data)

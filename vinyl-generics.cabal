@@ -53,6 +53,9 @@ library
 
  exposed-modules:
   Vinyl.Generics
+  Vinyl.Generics.Represent
+  Vinyl.Generics.Product
+  Vinyl.Generics.Sum
   Vinyl.Generics.Types
 
 -- other-modules:
@@ -73,9 +76,11 @@ library
   -- , stm
   -- , template-haskell
 
-  , deepseq
-  , hashable
-  , semigroups
+  --
+  -- , deepseq
+  -- , hashable
+  -- , semigroups
+
   -- ,
   -- , lens
   -- , exceptions
@@ -98,7 +103,7 @@ library
   -- , parallel
 
 
-executable vinyl-generics-example
+executable example-vinyl-generics
  hs-source-dirs:      executables
  main-is:             Main.hs
 
