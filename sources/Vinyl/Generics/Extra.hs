@@ -6,6 +6,8 @@ module Vinyl.Generics.Extra
 -- import Control.DeepSeq as X (NFData)
 -- import Data.Hashable as X (Hashable)
 -- import Data.Semigroup as X (Semigroup)
+-- import Data.Vinyl
+import Data.Vinyl.Functor
 
 import GHC.Generics as X (Generic)
 import Data.Data as X (Data)
@@ -14,6 +16,7 @@ import Control.Arrow as X ((>>>))
 import Data.Function as X ((&))
 import Data.Foldable as X (traverse_)
 
+type I = Identity
 
 nothing :: (Monad m) => m ()
 nothing = return ()
