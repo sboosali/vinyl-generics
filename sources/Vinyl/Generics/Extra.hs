@@ -18,6 +18,9 @@ import Data.Foldable as X (traverse_)
 
 type I = Identity
 
+-- pattern I :: a -> Identity a
+-- pattern (I a) = Identity a
+
 nothing :: (Monad m) => m ()
 nothing = return ()
 

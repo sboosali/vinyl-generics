@@ -3,8 +3,12 @@
 {-|
 
 -}
-module Vinyl.Generics.Epample where
+module Vinyl.Generics.Example where
 import Vinyl.Generics
+
+import Data.Vinyl (Rec(..),(<+>))
+import Data.Vinyl.Lens (RSubset(..))
+import Data.Vinyl.Functor (Identity(..))
 
 import Data.Foldable (traverse_)
 
@@ -12,7 +16,7 @@ import Data.Foldable (traverse_)
 
 {-|
 @
-stack build && stack epec -- epample-vinyl-generics
+stack build && stack exec -- example-vinyl-generics
 @
 -}
 main :: IO ()
@@ -25,11 +29,24 @@ main = do
 
   putStrLn ""
 
-  let f = F p ()
-  print $ f
-  print $ intoProduct f
+  let f_original = F p ()
+  let f_generic = intoProduct f_original
 
+  -- "inline" the products, partly
+  let f_inlinePartly = case f_generic of
+                (Identity p' :& r) -> Identity (intoProduct p') :& r
+  -- "inline" the products, totally
+  let f_inlineTotally = case f_inlinePartly of
+                (Identity p'' :& r) -> p'' <+> r
+                --TODO cleanup: type changing lens, rmodify.
+
+  print $ f_original
+  print $ f_generic
+  print $ f_inlinePartly
+  print $ f_inlineTotally
   putStrLn ""
+
+--old rreplace (Identity (intoProduct p) :& RNil) f_generic
 
 --------------------------------------------------------------------------------
 
@@ -47,6 +64,7 @@ data P = P
  , pI :: Integer
  , pS :: String
  } deriving (Show,Generic)
+instance IsProduct P
 
 {-old
 
