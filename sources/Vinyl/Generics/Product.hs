@@ -3,6 +3,8 @@
 {-# LANGUAGE TypeFamilies, ExplicitNamespaces, DataKinds, UndecidableInstances #-}
 {-# LANGUAGE DeriveGeneric, DeriveDataTypeable #-}
 
+{-# LANGUAGE AllowAmbiguousTypes #-}
+
 {-|
 -}
 module Vinyl.Generics.Product where
@@ -17,6 +19,32 @@ import Data.Constraint (Dict(..),(:-)(..))
 
 import Data.Proxy
 import GHC.Generics
+
+
+rcastPair :: [ Z, 'S Z ] ~ RImage [a,b] [a,b]
+          => Rec f '[a,b] -> Rec f '[a,b]
+rcastPair = rcast
+
+rcastLeft :: Rec f (as ++ bs) -> Rec f as
+rcastLeft = undefined -- rcast
+
+rcastRight :: Rec f (as ++ bs) -> Rec f bs
+rcastRight = undefined -- rcast
+
+{-old
+
+rcastLeft :: Rec f (as ++ bs) -> Rec f as
+rcastLeft = rcast
+
+rcastLeft :: (cs ~ (as ++ bs)) => Rec f cs -> Rec f as
+
+rcast4 :: Rec f ([a,b] ++ [c,d]) -> Rec f [a,b]
+rcast4 = rcast
+
+https://www.reddit.com/r/haskell/comments/4mt8kg/help_could_not_deduce_as_as_bs_with_vinyl/
+
+-}
+
 
 --------------------------------------------------------------------------------
 
@@ -92,19 +120,17 @@ instance GIsProduct (K1 R a) where --TODO R?
 -- | use '<+>'
 instance
  ( GIsProduct f, GIsProduct g
- , GFields f <: GFields f
- , GFields g <: GFields g
+ -- , GFields f <: GFields f
+ -- , GFields g <: GFields g
  )
  => GIsProduct (f :*: g) where
  type GFields (f :*: g) = GFields f ++ GFields g
  intoGProduct (f :*: g) = intoGProduct f <+> intoGProduct g
- fromGProduct p =
-   case (proof_RightAppendPreservesSubset pFs pFs pGs) of
-     Sub Dict -> case (proof_LeftAppendPreservesSubset pGs pGs pFs) of
-       Sub Dict -> (fromGProduct (rcast p)) :*: (fromGProduct (rcast p)) --TODO duplicates?
-  where
-  pFs = Proxy :: Proxy (GFields f)
-  pGs = Proxy :: Proxy (GFields g)
+ fromGProduct p = undefined -- (fromGProduct (rcast p)) :*: (fromGProduct (rcast p)) --TODO duplicates?
+
+  -- where
+  -- pFs = Proxy :: Proxy (GFields f)
+  -- pGs = Proxy :: Proxy (GFields g)
 
 {-old
 
